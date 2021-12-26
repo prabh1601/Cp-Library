@@ -1,0 +1,52 @@
+<snippet>
+	<content><![CDATA[
+template <typename T, typename F = function<T(const T &, const T &)>> struct segtree {
+    int n = 1, leafs = 1;
+    vector<T> tree;
+    T neutral;
+    F fun;
+
+    segtree() {}
+
+    segtree(const int size, const T &_neutral, const F &_fun) : leafs(size), neutral(_neutral), fun(_fun) {
+        while (n < size) n *= 2;
+        tree.resize(2 * n, neutral);
+    }
+
+    // initialize the tree in O(n)
+    template <typename Function> void init(Function initialize) {
+        for (int i = 0; i < leafs; i++) tree[i + n] = initialize(i);
+        for (int i = n - 1; i > 0; i--) tree[i] = fun(tree[2 * i], tree[2 * i + 1]);
+    }
+
+    // point update in O(logn)
+    void update(int i, T val) {
+        for (tree[i += n] = T(val); i > 1; i >>= 1) {
+            int l_child = i, r_child = i ^ 1;
+            if (l_child > r_child) swap(l_child, r_child);
+            tree[i >> 1] = fun(tree[l_child], tree[r_child]);
+        }
+    }
+
+    // query to [L,R) in O(logn)
+    T query(int l, int r) {
+        assert(0 <= l and l < r and r <= n);
+        T left = neutral, right = neutral;
+        for (l += n, r += n; l < r; l >>= 1, r >>= 1) {
+            if (l & 1) left = fun(left, tree[l++]);
+            if (r & 1) right = fun(tree[--r], right);
+        }
+        return fun(left, right);
+    }
+
+    // return the value of leaf 'index' in O(1)
+    T operator[](int index) { return tree[index + n]; }
+};
+
+${1:}
+]]></content>
+	<!-- Optional: Set a tabTrigger to define how to trigger the snippet -->
+	<tabTrigger>__lib:iterative_segtree</tabTrigger>
+	<!-- Optional: Set a scope to limit where the snippet will trigger -->
+	<scope>source.c++</scope>
+</snippet>

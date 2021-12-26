@@ -1,0 +1,109 @@
+<snippet>
+	<content><![CDATA[
+template <typename T, typename U = int, typename TT = function<T(const T&, const T&)>,
+          typename UU = function<U(const U&, const U&)>, typename UT = function<T(const T&, const U&)>>
+struct segtree {
+    int n = 1, leafs;
+    vector<T> tree;
+    vector<bool> has_updates;
+    vector<U> lazy_operation;
+    TT fun;
+    UU lazy_assign;
+    UT tree_assign;
+    T neutral;
+    U lazy_neutral;
+    bool range_mult = 0;
+
+    segtree() {}
+
+    segtree(const int size, const pair<T, U> _neutral_values, const TT _fun, const UU _lazy_assign,
+            const UT _tree_assign, bool mult = 0)
+        : leafs(size),
+          fun(_fun),
+          lazy_assign(_lazy_assign),
+          tree_assign(_tree_assign),
+          neutral(_neutral_values.first),
+          lazy_neutral(_neutral_values.second),
+          range_mult(mult) {
+        while (n < size) n *= 2;
+        tree.resize(2 * n, neutral);
+        lazy_operation.resize(n, lazy_neutral);
+        has_updates.resize(n);
+    }
+
+    template <typename Function> void init(Function initialize) {
+        for (int i = 0; i < leafs; i++) tree[i + n] = initialize(i);
+        for (int i = n - 1; i > 0; i--) tree[i] = fun(tree[2 * i], tree[2 * i + 1]);
+    }
+
+    void assign_changes(int x, int lx, int rx, int val) {
+        int fact = range_mult ? rx - lx : 1;
+        tree[x] = tree_assign(tree[x], fact * val);
+        if (rx - lx > 1) {
+            has_updates[x] = true;
+            lazy_operation[x] = lazy_assign(lazy_operation[x], val);
+        }
+    }
+
+    void push(int x, int lx, int rx) {
+        if (rx - lx == 1 or !has_updates[x]) return;
+
+        int l_child = 2 * x, r_child = 2 * x + 1;
+        int mid = (lx + rx) / 2;
+
+        assign_changes(l_child, lx, mid, lazy_operation[x]);
+        assign_changes(r_child, mid, rx, lazy_operation[x]);
+
+        has_updates[x] = false;
+        lazy_operation[x] = lazy_neutral;
+    }
+
+    // update range [L,R) in O(logn)
+    void range_modify(int l, int r, int val, int x, int lx, int rx) {
+        push(x, lx, rx);
+        if (l <= lx and rx <= r) {
+            assign_changes(x, lx, rx, val);
+            return;
+        }
+
+        if (r <= lx or rx <= l) return;
+
+        int mid = (lx + rx) / 2;
+        range_modify(l, r, val, 2 * x, lx, mid);
+        range_modify(l, r, val, 2 * x + 1, mid, rx);
+        tree[x] = fun(tree[2 * x], tree[2 * x + 1]);
+    }
+
+    // query to range [L,R) in O(logn)
+    T query(int l, int r, int x, int lx, int rx) {
+        push(x, lx, rx);
+
+        if (l <= lx and rx <= r) return tree[x];
+        if (r <= lx or rx <= l) return neutral;
+
+        int mid = (lx + rx) / 2;
+        T left_ans = query(l, r, 2 * x, lx, mid);
+        T right_ans = query(l, r, 2 * x + 1, mid, rx);
+        return fun(left_ans, right_ans);
+    }
+
+    // query to leaf 'index'
+    T operator[](int index) { return query(index, index + 1, 1, 0, n); }
+
+    // update to leaf 'index'
+    void update(int index, int value) { range_modify(index, index + 1, value, 1, 0, n); }
+
+    // query to [L,R)
+    T query(int l, int r) { return query(l, r, 1, 0, n); }
+
+    // update on [L,R)
+    void update(int l, int r, int value) { range_modify(l, r, value, 1, 0, n); }
+};
+
+${1:}
+]]></content>
+	<!-- Optional: Set a tabTrigger to define how to trigger the snippet -->
+	<tabTrigger>__lib:lazy_segtree</tabTrigger>
+	<!-- Optional: Set a scope to limit where the snippet will trigger -->
+	<scope>source.c++</scope>
+</snippet>

@@ -1,0 +1,47 @@
+<snippet>
+	<content><![CDATA[
+struct dsu {
+    struct node {
+        int size, parent;
+
+        node(int x = -1) {
+            this->size = 1;
+            this->parent = x;
+        }
+
+        void operator+=(const node& b) { this->size += b.size; }
+    };
+
+    vector<node> data;
+
+    dsu(int n) {
+        data.resize(n);
+        for (int i = 0; i < n; i++) { data[i] = node(i); }
+    }
+
+    // uses path compression
+    int find(int x) { return data[x].parent = (data[x].parent == x ? x : find(data[x].parent)); }
+
+    // uses small to large merge
+    inline bool unite(int u, int v) {
+        if ((u = find(u)) == (v = find(v))) return false;
+        if (data[u].size > data[v].size) swap(u, v);
+        data[u] += data[v];
+        data[v].parent = u;
+        return true;
+    }
+
+    inline bool connected(int u, int v) { return find(u) == find(v); }
+
+    inline bool isParent(int u) { return u == data[u].parent; }
+
+    inline node operator[](int u) { return data[u]; }
+};
+
+${1:}
+]]></content>
+	<!-- Optional: Set a tabTrigger to define how to trigger the snippet -->
+	<tabTrigger>__lib:dsu</tabTrigger>
+	<!-- Optional: Set a scope to limit where the snippet will trigger -->
+	<scope>source.c++</scope>
+</snippet>
