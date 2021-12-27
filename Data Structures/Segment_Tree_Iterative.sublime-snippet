@@ -1,6 +1,6 @@
 <snippet>
 	<content><![CDATA[
-template <typename T, typename F = function<T(const T &, const T &)>> struct segtree {
+template <typename T, typename F = function<T(const T&, const T&)>> struct segtree {
     int n = 1, leafs = 1;
     vector<T> tree;
     T neutral;
@@ -8,7 +8,7 @@ template <typename T, typename F = function<T(const T &, const T &)>> struct seg
 
     segtree() {}
 
-    segtree(const int size, const T &_neutral, const F &_fun) : leafs(size), neutral(_neutral), fun(_fun) {
+    segtree(const int size, const T& _neutral, const F& _fun) : leafs(size), neutral(_neutral), fun(_fun) {
         while (n < size) n *= 2;
         tree.resize(2 * n, neutral);
     }
@@ -21,10 +21,10 @@ template <typename T, typename F = function<T(const T &, const T &)>> struct seg
 
     // point update in O(logn)
     void update(int i, T val) {
-        for (tree[i += n] = T(val); i > 1; i >>= 1) {
+        for (tree[i += n] = T(val); i > 1; i /= 2) {
             int l_child = i, r_child = i ^ 1;
             if (l_child > r_child) swap(l_child, r_child);
-            tree[i >> 1] = fun(tree[l_child], tree[r_child]);
+            tree[i / 2] = fun(tree[l_child], tree[r_child]);
         }
     }
 
@@ -32,7 +32,7 @@ template <typename T, typename F = function<T(const T &, const T &)>> struct seg
     T query(int l, int r) {
         assert(0 <= l and l < r and r <= n);
         T left = neutral, right = neutral;
-        for (l += n, r += n; l < r; l >>= 1, r >>= 1) {
+        for (l += n, r += n; l < r; l /= 2, r /= 2) {
             if (l & 1) left = fun(left, tree[l++]);
             if (r & 1) right = fun(tree[--r], right);
         }
