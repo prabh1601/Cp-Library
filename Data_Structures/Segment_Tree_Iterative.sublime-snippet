@@ -8,7 +8,8 @@ template <typename T, typename F = function<T(const T&, const T&)>> struct segme
 
     segment_tree() {}
 
-    segment_tree(const int size, const T& _neutral, const F& _fun) : leafs(size), neutral(_neutral), fun(_fun) {
+    segment_tree(const int size, const T& _neutral, const F& _fun)
+        : leafs(size), neutral(_neutral), fun(_fun) {
         while (n < size) n *= 2;
         tree.resize(2 * n, neutral);
     }
