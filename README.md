@@ -26,5 +26,5 @@ This is repository for my c++ implementations for various data structures and al
 
 ## Data Structures
 
-### [Disjoint Set Union] (Data Structures/Disjoint Set Union.sublime-snippet)
+### [Disjoint Set Union] (Data_Structures/Disjoint_Set_Union.sublime-snippet)
 ### Segment Tree

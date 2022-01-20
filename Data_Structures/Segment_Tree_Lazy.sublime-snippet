@@ -1,30 +1,30 @@
 <snippet>
-	<content><![CDATA[
+    <content><![CDATA[
 template <typename T, typename U = int, typename TT = function<T(const T&, const T&)>,
           typename UU = function<U(const U&, const U&)>, typename UT = function<T(const T&, const U&)>>
-struct segtree {
+struct segment_tree {
     int n = 1, leafs;
     vector<T> tree;
     vector<bool> has_updates;
     vector<U> lazy_operation;
     TT fun;
-    UU lazy_assign;
-    UT tree_assign;
+    UU LazyToLazyAssign;
+    UT LazyToTreeAssign;
     T neutral;
     U lazy_neutral;
     bool range_mult = 0;
 
     segtree() {}
 
-    segtree(const int size, const pair<T, U> _neutral_values, const TT _fun, const UU _lazy_assign,
-            const UT _tree_assign, bool mult = 0)
+    segtree(const int size, const pair<T, U> _neutral_values, const TT _fun, const UU _LazyToLazyAssign,
+            const UT _LazyToTreeAssign, bool rangeEffect = 0)
         : leafs(size),
           fun(_fun),
-          lazy_assign(_lazy_assign),
-          tree_assign(_tree_assign),
+          LazyToLazyAssign(_LazyToLazyAssign),
+          LazyToTreeAssign(_LazyToTreeAssign),
           neutral(_neutral_values.first),
           lazy_neutral(_neutral_values.second),
-          range_mult(mult) {
+          range_mult(rangeEffect) {
         while (n < size) n *= 2;
         tree.resize(2 * n, neutral);
         lazy_operation.resize(n, lazy_neutral);
@@ -38,10 +38,10 @@ struct segtree {
 
     void assign_changes(int x, int lx, int rx, int val) {
         int fact = range_mult ? rx - lx : 1;
-        tree[x] = tree_assign(tree[x], fact * val);
+        tree[x] = LazyToTreeAssign(tree[x], fact * val);
         if (rx - lx > 1) {
             has_updates[x] = true;
-            lazy_operation[x] = lazy_assign(lazy_operation[x], val);
+            lazy_operation[x] = LazyToLazyAssign(lazy_operation[x], val);
         }
     }
 
@@ -98,12 +98,14 @@ struct segtree {
 
     // update on [L,R)
     void update(int l, int r, int value) { range_modify(l, r, value, 1, 0, n); }
+
+    // constructor : (size,{tree_n,lazy_n},fun,ltl,ltt,rangeEffect);
 };
 
 ${1:}
 ]]></content>
-	<!-- Optional: Set a tabTrigger to define how to trigger the snippet -->
-	<tabTrigger>__lib:lazy_segtree</tabTrigger>
-	<!-- Optional: Set a scope to limit where the snippet will trigger -->
-	<scope>source.c++</scope>
+    <!-- Optional: Set a tabTrigger to define how to trigger the snippet -->
+    <tabTrigger>__lib:lazy_segtree</tabTrigger>
+    <!-- Optional: Set a scope to limit where the snippet will trigger -->
+    <scope>source.c++</scope>
 </snippet>
