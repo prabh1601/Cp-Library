@@ -6,9 +6,9 @@ template <typename T, typename F = function<T(const T&, const T&)>> struct segme
     T neutral;
     F fun;
 
-    segtree() {}
+    segment_tree() {}
 
-    segtree(const int size, const T& _neutral, const F& _fun) : leafs(size), neutral(_neutral), fun(_fun) {
+    segment_tree(const int size, const T& _neutral, const F& _fun) : leafs(size), neutral(_neutral), fun(_fun) {
         while (n < size) n *= 2;
         tree.resize(2 * n, neutral);
     }
