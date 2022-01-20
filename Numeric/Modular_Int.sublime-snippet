@@ -59,7 +59,7 @@ template <typename T> class Modnum {
     Modnum operator-() const { return Modnum(-value); \}
 
     template <typename U = T>
-    typename enable_if<is_same<typename Modnum<U>::Type, int>::value, Modnum>::type& operator*=(
+    typename enable_if<is_same<typename Modnum<U>::Type, int32_t>::value, Modnum>::type& operator*=(
         const Modnum& rhs) {
 #ifdef _WIN32
         uint64_t x = static_cast<int64_t>(value) * static_cast<int64_t>(rhs.value);
@@ -190,7 +190,7 @@ using mint = Modnum<VarMod>;
 constexpr int md = 1e9 + 7;
 using mint = Modnum<std::integral_constant<decay<decltype(md)>::type, md>>;
 
-string to_String(mint x) { return to_String((int)x); }
+string to_String(mint x) { return to_String((int32_t)x); }
 
 ${1:}
 ]]></content>
