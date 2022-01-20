@@ -1,128 +1,102 @@
 using namespace std;
-typedef string str;
-#define FOR(i, a, b) for (int i = (a); i < (b); ++i)
-#define F0R(i, a) FOR(i,0,a)
-str pinf = "4000000000000000000";
-str ninf = "-4000000000000000000";
-
-// single variable printers
+int64_t _inf = 4e18;
+string _pinf = to_string(_inf);
+string _ninf = to_string(-_inf);
 
 bool add1 = false;
 
-str convert(string t) {
-    if (t == pinf) return "\u221E";
-    else if (t == ninf) return "-\u221E";
-    else return t;
+string convert(string t) {
+    if (t == _pinf)
+        return "\u221E";
+    else if (t == _ninf)
+        return "-\u221E";
+    else
+        return t;
 }
 
-inline string
-to_String(long long _val) {
-    return convert(__gnu_cxx::__to_xstring<string>(&std::vsnprintf,
-                   4 * sizeof(long long),
-                   "%lld", _val + add1));
+// single variable printers
+
+inline string to_String(int64_t _val) {
+    return convert(
+        __gnu_cxx::__to_xstring<string>(&std::vsnprintf, 4 * sizeof(int64_t), "%lld", _val + add1));
 }
 
-inline string
-to_String(unsigned long long _val) {
-    return convert(__gnu_cxx::__to_xstring<string>(&std::vsnprintf,
-                   4 * sizeof(unsigned long long),
-                   "%llu", _val + add1));
+inline string to_String(uint64_t _val) {
+    return convert(
+        __gnu_cxx::__to_xstring<string>(&std::vsnprintf, 4 * sizeof(uint64_t), "%llu", _val + add1));
 }
 
-inline string
-to_String(int _val) {
-    return convert(__gnu_cxx::__to_xstring<string>(&std::vsnprintf, 4 * sizeof(int),
-                   "%d", _val + add1));
+inline string to_String(int _val) {
+    return convert(__gnu_cxx::__to_xstring<string>(&std::vsnprintf, 4 * sizeof(int), "%d", _val + add1));
 }
 
-inline string
-to_String(unsigned _val) {
-    return convert(__gnu_cxx::__to_xstring<string>(&std::vsnprintf,
-                   4 * sizeof(unsigned),
-                   "%u", _val + add1));
+inline string to_String(unsigned _val) {
+    return convert(__gnu_cxx::__to_xstring<string>(&std::vsnprintf, 4 * sizeof(unsigned), "%u", _val + add1));
 }
 
-inline string
-to_String(float _val) {
-    const int __n =
-        __gnu_cxx::__numeric_traits<float>::__max_exponent10 + 20;
-    return convert(__gnu_cxx::__to_xstring<string>(&std::vsnprintf, __n,
-                   "%f", _val));
+inline string to_String(float _val) {
+    const int __n = __gnu_cxx::__numeric_traits<float>::__max_exponent10 + 20;
+    return convert(__gnu_cxx::__to_xstring<string>(&std::vsnprintf, __n, "%f", _val));
 }
 
-inline string
-to_String(double _val) {
-    const int __n =
-        __gnu_cxx::__numeric_traits<double>::__max_exponent10 + 20;
-    return convert(__gnu_cxx::__to_xstring<string>(&std::vsnprintf, __n,
-                   "%f", _val));
+inline string to_String(double _val) {
+    const int __n = __gnu_cxx::__numeric_traits<double>::__max_exponent10 + 20;
+    return convert(__gnu_cxx::__to_xstring<string>(&std::vsnprintf, __n, "%f", _val));
 }
 
-inline string
-to_String(long double _val) {
-    const int __n =
-        __gnu_cxx::__numeric_traits<long double>::__max_exponent10 + 20;
-    return convert(__gnu_cxx::__to_xstring<string>(&std::vsnprintf, __n,
-                   "%Lf", _val));
+inline string to_String(long double _val) {
+    const int __n = __gnu_cxx::__numeric_traits<long double>::__max_exponent10 + 20;
+    return convert(__gnu_cxx::__to_xstring<string>(&std::vsnprintf, __n, "%Lf", _val));
 }
 
-str to_String(bool b) { return b ? "true" : "false"; }
+string to_String(bool b) { return b ? "true" : "false"; }
 
-str to_String(char c) { return str(1, c); }
+string to_String(char c) { return string(1, c); }
 
-str to_String(str s) { return s; }
+string to_String(string s) { return s; }
 
-str to_String(const char *s) { return (str) s; }
+string to_String(const char *s) { return (string)s; }
 
 // data structure printers
 
-str to_String(vector<bool> v);
+string to_String(vector<bool> v);
 
-template<size_t SZ>
-str to_String(bitset<SZ> b);
+template <size_t SZ> string to_String(bitset<SZ> b);
 
-template<class T>
-str to_String(T v);
+template <class T> string to_String(T v);
 
-template<class A, class B, class C>
-str to_String(priority_queue<A, B, C> pq);
+template <class A, class B, class C> string to_String(priority_queue<A, B, C> pq);
 
-template<class A>
-str to_String(stack<A> s);
+template <class A> string to_String(stack<A> s);
 
-template<class A>
-str to_String(queue<A> q);
+template <class A> string to_String(queue<A> q);
 
-template<class A, class B>
-str to_String(pair<A, B> p) {
+template <class A, class B> string to_String(pair<A, B> p) {
     return "(" + to_String(p.first) + ", " + to_String(p.second) + ")";
 }
 
-template<class A>
-str to_String(complex<A> c) {
+template <class A> string to_String(complex<A> c) {
     stringstream ss;
     ss << c;
     return ss.str();
 }
 
-str to_String(vector<bool> v) {
-    str res = "{";
-    F0R(i, (int) v.size()) res += char('0' + v[i]);
+string to_String(vector<bool> v) {
+    string res = "{";
+    for (int i = 0; i < (int)v.size(); i++) res += char('0' + v[i]);
     res += "}";
     return res;
 }
 
-template<size_t SZ>
-str to_String(bitset<SZ> b) {
-    str res;
-    F0R(i, SZ) res += char('0' + b[i]);
+template <size_t SZ> string to_String(bitset<SZ> b) {
+    string res;
+    for (int i = 0; i < SZ; i++) res += char('0' + b[i]);
     return res;
 }
 
-template<class T>
-str to_String(T v) { // containers with begin(), end()
+template <class T> string to_String(T v) {  // containers with begin(), end()
     bool fst = true;
-    str res = "{";
+    string res = "{";
     for (const auto &x : v) {
         if (!fst) res += ", ";
         fst = false;
@@ -132,10 +106,9 @@ str to_String(T v) { // containers with begin(), end()
     return res;
 }
 
-template<class A, class B, class C>
-str to_String(priority_queue<A, B, C> pq) {
+template <class A, class B, class C> string to_String(priority_queue<A, B, C> pq) {
     bool fst = true;
-    str res = "{";
+    string res = "{";
     while (!pq.empty()) {
         auto x = pq.top();
         pq.pop();
@@ -147,10 +120,9 @@ str to_String(priority_queue<A, B, C> pq) {
     return res;
 }
 
-template<class A>
-str to_String(stack<A> s) {
+template <class A> string to_String(stack<A> s) {
     bool fst = true;
-    str res = "{";
+    string res = "{";
     while (!s.empty()) {
         auto x = s.top();
         s.pop();
@@ -162,10 +134,9 @@ str to_String(stack<A> s) {
     return res;
 }
 
-template<class A>
-str to_String(queue<A> q) {
+template <class A> string to_String(queue<A> q) {
     bool fst = true;
-    str res = "{";
+    string res = "{";
     while (!q.empty()) {
         auto x = q.front();
         q.pop();
@@ -178,41 +149,42 @@ str to_String(queue<A> q) {
 }
 
 // DEBUG
-template<typename T>
-void DBG(const char *names, T t) { cerr << " [" << names << " : " << to_String(t) << "]" << endl; }
+template <typename T> void DBG(const char *names, T t) {
+    cerr << " [" << names << " : " << to_String(t) << "]" << endl;
+}
 
-template<typename H, typename... T>
-void DBG(const char *names, H h, T ... t) {
+template <typename H, typename... T> void DBG(const char *names, H h, T... t) {
     const char *others = strchr(names + 1, ',');
     cerr << " [";
     cerr.write(names, others - names) << " : " << to_String(h) << "] ";
     DBG(others + 2, t...);
 }
 
-str a(auto v) {
+string a(auto v) {
     add1 = true;
-    str ans = to_String(v);
+    string ans = to_String(v);
     add1 = false;
     return ans;
 }
 
-#define dbg(...) cerr << "(" << __LINE__ << ") -> "; DBG(#__VA_ARGS__, __VA_ARGS__);
-#define dbga(...) add1 = true, cerr << "(" << __LINE__ << ") -> "; DBG(#__VA_ARGS__, __VA_ARGS__), add1 = false
+#define dbg(...)                        \
+    cerr << "(" << __LINE__ << ") -> "; \
+    DBG(#__VA_ARGS__, __VA_ARGS__);
+#define dbga(...)                                    \
+    add1 = true, cerr << "(" << __LINE__ << ") -> "; \
+    DBG(#__VA_ARGS__, __VA_ARGS__), add1 = false
 
 // OUTPUT
-template<class A>
-void pr(A x) { cout << to_String(x); }
+template <class A> void pr(A x) { cout << to_String(x); }
 
-template<class H, class... T>
-void pr(const H &h, const T &... t) {
+template <class H, class... T> void pr(const H &h, const T &...t) {
     pr(h);
     pr(t...);
 }
 
-void ps() { pr("\n"); } // print w/ spaces
+void ps() { pr("\n"); }  // print w/ spaces
 
-template<class H, class... T>
-void ps(const H &h, const T &... t) {
+template <class H, class... T> void ps(const H &h, const T &...t) {
     pr(h);
     if (sizeof...(t)) pr(" ");
     ps(t...);
