@@ -8,23 +8,23 @@ struct segment_tree {
     vector<bool> has_updates;
     vector<U> lazy_operation;
     TT fun;
-    UU LazyToLazyAssign;
-    UT LazyToTreeAssign;
+    UU lazy_to_lazy_assign;
+    UT lazy_to_tree_assign;
     T neutral;
     U lazy_neutral;
-    bool range_mult = 0;
+    bool range_effect = 0;
 
-    segtree() {}
+    segment_tree() {}
 
-    segtree(const int size, const pair<T, U> _neutral_values, const TT _fun, const UU _LazyToLazyAssign,
-            const UT _LazyToTreeAssign, bool rangeEffect = 0)
+    segment_tree(const int size, const pair<T, U> _neutral_values, const TT _fun,
+                 const UU _lazy_to_lazy_assign, const UT _lazy_to_tree_assign, bool _range_effect = 0)
         : leafs(size),
           fun(_fun),
-          LazyToLazyAssign(_LazyToLazyAssign),
-          LazyToTreeAssign(_LazyToTreeAssign),
+          lazy_to_lazy_assign(_lazy_to_lazy_assign),
+          lazy_to_tree_assign(_lazy_to_tree_assign),
           neutral(_neutral_values.first),
           lazy_neutral(_neutral_values.second),
-          range_mult(rangeEffect) {
+          range_effect(_range_effect) {
         while (n < size) n *= 2;
         tree.resize(2 * n, neutral);
         lazy_operation.resize(n, lazy_neutral);
@@ -37,11 +37,11 @@ struct segment_tree {
     }
 
     void assign_changes(int x, int lx, int rx, int val) {
-        int fact = range_mult ? rx - lx : 1;
-        tree[x] = LazyToTreeAssign(tree[x], fact * val);
+        int fact = range_effect ? rx - lx : 1;
+        tree[x] = lazy_to_tree_assign(tree[x], fact * val);
         if (rx - lx > 1) {
             has_updates[x] = true;
-            lazy_operation[x] = LazyToLazyAssign(lazy_operation[x], val);
+            lazy_operation[x] = lazy_to_lazy_assign(lazy_operation[x], val);
         }
     }
 
