@@ -31,7 +31,7 @@ template <typename T, typename F = function<T(const T&, const T&)>> struct segme
 
     // query to [L,R) in O(logn)
     T query(int l, int r) {
-        static_assert(0 <= l and l < r and r <= n);
+        assert(0 <= l and l < r and r <= n);
         T left = neutral, right = neutral;
         for (l += n, r += n; l < r; l >>= 1, r >>= 1) {
             if (l & 1) left = fun(left, tree[l++]);

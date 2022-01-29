@@ -25,7 +25,7 @@ template <typename T, typename F = function<T(const T &, const T &)>> struct spa
 
     // query to [L,R) in O(1)
     T query(int start, int end) {
-        assert(0 <= start and start < end and end <= n + 1);
+        assert(0 <= start and start < end and end <= n);
         int l = 31 - __builtin_clz(end - start);
         T ans = fun(data[l][start], data[l][end - (1 << l)]);
         return ans;
