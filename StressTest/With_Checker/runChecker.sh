@@ -13,10 +13,10 @@ echo -e -n "\n\e[1;36mCompilation Successful\e[0m\n"
 
 #running stress
 for((i = 1; ; ++i)); do
-	$relative_directory/gen $i > $relative_directory/input_file
+    echo -e -n "\033[1;32m\rRunning Test : \033[0m" $i
+    $relative_directory/gen $i > $relative_directory/input_file
     $relative_directory/test < $relative_directory/input_file > $relative_directory/myAnswer
     $relative_directory/good < $relative_directory/input_file > $relative_directory/correctAnswer
     $relative_directory/checker > $relative_directory/checker_log
-    echo -e -n "\033[1;32m\rRunning Test : \033[0m" $i
 done
     
