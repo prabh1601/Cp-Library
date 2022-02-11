@@ -1,5 +1,3 @@
 #ignoring generator precompiled
 *.gch
 
-#ignoring normal snippets
-Snippets/
