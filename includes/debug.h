@@ -17,13 +17,11 @@ string convert(string t) {
 // single variable printers
 
 inline string to_String(int64_t _val) {
-    return convert(
-        __gnu_cxx::__to_xstring<string>(&std::vsnprintf, 4 * sizeof(int64_t), "%lld", _val + add1));
+    return convert(__gnu_cxx::__to_xstring<string>(&std::vsnprintf, 4 * sizeof(int64_t), "%lld", _val + add1));
 }
 
 inline string to_String(uint64_t _val) {
-    return convert(
-        __gnu_cxx::__to_xstring<string>(&std::vsnprintf, 4 * sizeof(uint64_t), "%llu", _val + add1));
+    return convert(__gnu_cxx::__to_xstring<string>(&std::vsnprintf, 4 * sizeof(uint64_t), "%llu", _val + add1));
 }
 
 inline string to_String(int _val) {

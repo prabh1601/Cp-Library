@@ -1,7 +1,7 @@
 set -e
 $bash ./runChecker.sh
 
-relative_directory='/mnt/3E86036E860325CD/CP/TestCases'
+relative_directory='/mnt/Drive1/CP/TestCases'
 
 #printing out the results
 printf "\n\e[1;33mCounter Test\e[0m\n"

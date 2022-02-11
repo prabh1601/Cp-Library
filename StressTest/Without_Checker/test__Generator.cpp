@@ -1,4 +1,4 @@
-#include "/mnt/3E86036E860325CD/CP/Algo_Library/Headers/generator.hpp"
+#include "/mnt/Drive1/CP/Algo_Library/includes/generator.h"
 using namespace std;
 using namespace jngen;
 

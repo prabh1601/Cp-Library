@@ -1,5 +1,6 @@
 <snippet>
 	<content><![CDATA[
+// Iterative Segment Tree
 template <typename T, typename F = function<T(const T&, const T&)>> struct segment_tree {
     int n = 1, leafs = 1;
     vector<T> tree;

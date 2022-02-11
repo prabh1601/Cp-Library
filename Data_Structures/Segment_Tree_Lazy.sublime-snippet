@@ -1,5 +1,6 @@
 <snippet>
     <content><![CDATA[
+// Lazy Segment Tree 
 template <typename T, typename U = int, typename TT = function<T(const T&, const T&)>,
           typename UU = function<U(const U&, const U&)>, typename UT = function<T(const T&, const U&)>>
 struct segment_tree {

@@ -1,12 +1,12 @@
 set -e
 
 # relative location to store the (build and data) files
-relative_directory='/mnt/3E86036E860325CD/CP/TestCases'
+relative_directory='/mnt/Drive1/CP/TestCases'
 
 #compiling the cpp files
-g++ -std=c++20 test__Generator.cpp -o $relative_directory/gen || { echo -e "\n\e[1;31mCompilation Error : \e[0mGenerator\n"; exit 1; }
+g++ -std=c++20 test_Generator.cpp -o $relative_directory/gen || { echo -e "\n\e[1;31mCompilation Error : \e[0mGenerator\n"; exit 1; }
 g++ -std=c++20 test.cpp -o $relative_directory/test || { echo -e "\n\e[1;31mCompilation Error : \e[0mTestFile\n"; exit 1; }
-g++ -std=c++20 test__Good.cpp -o $relative_directory/good || { echo -e "\n\e[1;31mCompilation Error : \e[0mGoodFile\n"; exit 1; }
+g++ -std=c++20 test_Good.cpp -o $relative_directory/good || { echo -e "\n\e[1;31mCompilation Error : \e[0mGoodFile\n"; exit 1; }
 
 echo -e -n "\n\e[1;36mCompilation Successful\e[0m\n"
 
