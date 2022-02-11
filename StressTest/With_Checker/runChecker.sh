@@ -4,7 +4,7 @@ set -e
 relative_directory='/mnt/Drive1/CP/TestCases'
 
 #compiling the cpp files
-g++ -std=c++17 test__Generator.cpp -o $relative_directory/gen || { echo -e "\n\e[1;31mCompilation Error : \e[0mGenerator\n"; exit 1; }
+g++ -std=c++17 test_Generator.cpp -o $relative_directory/gen || { echo -e "\n\e[1;31mCompilation Error : \e[0mGenerator\n"; exit 1; }
 g++ -std=c++17 test.cpp -o $relative_directory/test || { echo -e "\n\e[1;31mCompilation Error : \e[0mTestFile\n"; exit 1; }
 g++ -std=c++17 test_Good.cpp -o $relative_directory/good || { echo -e "\n\e[1;31mCompilation Error :\e[0mGoodFile\n"; exit 1; }
 g++ -std=c++17 test_checker.cpp -o $relative_directory/checker || { echo -e "\n\e[1;31mCompilation Error : \e[0mChecker\n"; exit 1; }
