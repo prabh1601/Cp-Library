@@ -1,26 +1,46 @@
-// Work hard, have fun, make history :)
-#include "bits/stdc++.h"
+#include <bits/stdc++.h>
 using namespace std;
 
-#define int long long
-#define ld long double
-#define pb push_back
-#define mag(v) (int)v.size()
-#define all(v) begin(v), end(v)
-const int inf = 4e18;
-const int N = 2e5 + 10;  // verify
+using ll = long long;
 
-template <typename T> bool ckmin(T& a, T b) { return b < a && (a = b, true); }
-template <typename T> bool ckmax(T& a, T b) { return b > a && (a = b, true); }
-
-void testCase() { cout << "NO"; }
-
-int32_t main() {
-    cin.tie(0)->sync_with_stdio(0);
-    int t_c = 1;
-    // cin >> t_c;
-    for (int testNo = 1; testNo <= t_c; testNo++) {
-        // cout << "Case #" << t << ": ";
-        testCase();
+template <class F> ll optimize(int low, int high, const F& f) {
+    while (high - low > 2) {
+        const int m1 = (low + high) / 2;
+        const int m2 = m1 + 1;
+        if (f(m1) < f(m2)) {
+            low = m1;
+        } else {
+            high = m2;
+        }
     }
+    return f(low + 1);
+}
+
+void solve() {
+    int n, m;
+    cin >> n >> m;
+    ll a = 0, b = 0, ans = numeric_limits<ll>::min();
+    for (int i = 0; i < n; ++i) {
+        ll x, y;
+        cin >> x >> y;
+        const auto f = [&](const int k) { return a + b * k + x * k * (k + 1) / 2; };
+        if (x > 0) {
+            ans = max(ans, f(1));
+            ans = max(ans, f(y));
+        } else {
+            ans = max(ans, optimize(0, y + 1, f));
+        }
+        a = f(y);
+        b += x * y;
+    }
+    cout << ans << '\n';
+}
+
+int main() {
+    int t;
+    cin >> t;
+    while (t--) {
+        solve();
+    }
+    return 0;
 }

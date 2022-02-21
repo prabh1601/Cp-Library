@@ -1,5 +1,6 @@
 set -e
-$bash ./runChecker.sh
+dir='/mnt/Drive1/CP/Algo_Library/StressTest/With_Checker'
+$dir/runChecker.sh
 
 relative_directory='/mnt/Drive1/CP/TestCases'
 
