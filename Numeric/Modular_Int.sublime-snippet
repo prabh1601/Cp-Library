@@ -16,10 +16,8 @@ template <typename T> T inverse(T a, T m) {
 template <typename T> class Modnum {
    public:
     using Type = typename decay<decltype(T::value)>::type;
-
     constexpr Modnum() : value() {}
     template <typename U> Modnum(const U& x) { value = normalize(x); }
-
     template <typename U> static Type normalize(const U& x) {
         Type v;
         if (-mod() <= x && x < mod())
@@ -86,90 +84,35 @@ template <typename T> class Modnum {
     }
 
     Modnum& operator/=(const Modnum& other) { return *this *= Modnum(inverse(other.value, mod())); }
-
     template <typename U> friend bool operator==(const Modnum<U>& lhs, const Modnum<U>& rhs);
-
     template <typename U> friend bool operator<(const Modnum<U>& lhs, const Modnum<U>& rhs);
-
     template <typename U> friend std::istream& operator>>(std::istream& stream, Modnum<U>& number);
 
    private:
     Type value;
 };
 
-template <typename T> bool operator==(const Modnum<T>& lhs, const Modnum<T>& rhs) {
-    return lhs.value == rhs.value;
-}
-template <typename T, typename U> bool operator==(const Modnum<T>& lhs, U rhs) {
-    return lhs == Modnum<T>(rhs);
-}
-template <typename T, typename U> bool operator==(U lhs, const Modnum<T>& rhs) {
-    return Modnum<T>(lhs) == rhs;
-}
-
+template <typename T> bool operator==(const Modnum<T>& lhs, const Modnum<T>& rhs) { return lhs.value == rhs.value; }
+template <typename T, typename U> bool operator==(const Modnum<T>& lhs, U rhs) { return lhs == Modnum<T>(rhs); }
+template <typename T, typename U> bool operator==(U lhs, const Modnum<T>& rhs) { return Modnum<T>(lhs) == rhs; }
 template <typename T> bool operator!=(const Modnum<T>& lhs, const Modnum<T>& rhs) { return !(lhs == rhs); }
 template <typename T, typename U> bool operator!=(const Modnum<T>& lhs, U rhs) { return !(lhs == rhs); }
 template <typename T, typename U> bool operator!=(U lhs, const Modnum<T>& rhs) { return !(lhs == rhs); }
+template <typename T> bool operator<(const Modnum<T>& lhs, const Modnum<T>& rhs) { return lhs.value < rhs.value; }
+template <typename T> Modnum<T> operator+(const Modnum<T>& lhs, const Modnum<T>& rhs) { return Modnum<T>(lhs) += rhs; }
+template <typename T, typename U> Modnum<T> operator+(const Modnum<T>& lhs, U rhs) { return Modnum<T>(lhs) += rhs; }
+template <typename T, typename U> Modnum<T> operator+(U lhs, const Modnum<T>& rhs) { return Modnum<T>(lhs) += rhs; }
+template <typename T> Modnum<T> operator-(const Modnum<T>& lhs, const Modnum<T>& rhs) { return Modnum<T>(lhs) -= rhs; }
+template <typename T, typename U> Modnum<T> operator-(const Modnum<T>& lhs, U rhs) { return Modnum<T>(lhs) -= rhs; }
+template <typename T, typename U> Modnum<T> operator-(U lhs, const Modnum<T>& rhs) { return Modnum<T>(lhs) -= rhs; }
+template <typename T> Modnum<T> operator*(const Modnum<T>& lhs, const Modnum<T>& rhs) { return Modnum<T>(lhs) *= rhs; }
+template <typename T, typename U> Modnum<T> operator*(const Modnum<T>& lhs, U rhs) { return Modnum<T>(lhs) *= rhs; }
+template <typename T, typename U> Modnum<T> operator*(U lhs, const Modnum<T>& rhs) { return Modnum<T>(lhs) *= rhs; }
+template <typename T> Modnum<T> operator/(const Modnum<T>& lhs, const Modnum<T>& rhs) { return Modnum<T>(lhs) /= rhs; }
+template <typename T, typename U> Modnum<T> operator/(const Modnum<T>& lhs, U rhs) { return Modnum<T>(lhs) /= rhs; }
+template <typename T, typename U> Modnum<T> operator/(U lhs, const Modnum<T>& rhs) { return Modnum<T>(lhs) /= rhs; }
 
-template <typename T> bool operator<(const Modnum<T>& lhs, const Modnum<T>& rhs) {
-    return lhs.value < rhs.value;
-}
-
-template <typename T> Modnum<T> operator+(const Modnum<T>& lhs, const Modnum<T>& rhs) {
-    return Modnum<T>(lhs) += rhs;
-}
-template <typename T, typename U> Modnum<T> operator+(const Modnum<T>& lhs, U rhs) {
-    return Modnum<T>(lhs) += rhs;
-}
-template <typename T, typename U> Modnum<T> operator+(U lhs, const Modnum<T>& rhs) {
-    return Modnum<T>(lhs) += rhs;
-}
-
-template <typename T> Modnum<T> operator-(const Modnum<T>& lhs, const Modnum<T>& rhs) {
-    return Modnum<T>(lhs) -= rhs;
-}
-template <typename T, typename U> Modnum<T> operator-(const Modnum<T>& lhs, U rhs) {
-    return Modnum<T>(lhs) -= rhs;
-}
-template <typename T, typename U> Modnum<T> operator-(U lhs, const Modnum<T>& rhs) {
-    return Modnum<T>(lhs) -= rhs;
-}
-
-template <typename T> Modnum<T> operator*(const Modnum<T>& lhs, const Modnum<T>& rhs) {
-    return Modnum<T>(lhs) *= rhs;
-}
-template <typename T, typename U> Modnum<T> operator*(const Modnum<T>& lhs, U rhs) {
-    return Modnum<T>(lhs) *= rhs;
-}
-template <typename T, typename U> Modnum<T> operator*(U lhs, const Modnum<T>& rhs) {
-    return Modnum<T>(lhs) *= rhs;
-}
-template <typename T> Modnum<T> operator/(const Modnum<T>& lhs, const Modnum<T>& rhs) {
-    return Modnum<T>(lhs) /= rhs;
-}
-template <typename T, typename U> Modnum<T> operator/(const Modnum<T>& lhs, U rhs) {
-    return Modnum<T>(lhs) /= rhs;
-}
-template <typename T, typename U> Modnum<T> operator/(U lhs, const Modnum<T>& rhs) {
-    return Modnum<T>(lhs) /= rhs;
-}
-
-template <typename T, typename U> Modnum<T> power(const Modnum<T>& a, const U& b) {
-    assert(b >= 0);
-    Modnum<T> x = a, res = 1;
-    U p = b;
-    while (p > 0) {
-        if (p & 1) res *= x;
-        x *= x;
-        p >>= 1;
-    }
-    return res;
-}
-
-template <typename T> std::ostream& operator<<(std::ostream& stream, const Modnum<T>& number) {
-    return stream << number();
-}
-
+template <typename T> std::ostream& operator<<(std::ostream& stream, const Modnum<T>& number) { return stream << number(); }
 template <typename T> std::istream& operator>>(std::istream& stream, Modnum<T>& number) {
     typename common_type<typename Modnum<T>::Type, int64_t>::type x;
     stream >> x;
@@ -179,21 +122,19 @@ template <typename T> std::istream& operator>>(std::istream& stream, Modnum<T>& 
 
 /*
 using ModType = int32_t;
-struct VarMod {
-   static ModType value;
-};
+struct VarMod { static ModType value; };
 ModType VarMod::value;
 ModType& md = VarMod::value;
 using mint = Modnum<VarMod>;
 */
 
 constexpr int md = 1e9 + 7;
+// constexpr int md = 998244353;
 using mint = Modnum<std::integral_constant<decay<decltype(md)>::type, md>>;
 
 string to_String(mint x) { return to_String((int32_t)x); }
 
-${1:}
-]]></content>
+${1:}]]></content>
   <!-- Optional: Set a tabTrigger to define how to trigger the snippet -->
   <tabTrigger>__lib:Modnum</tabTrigger>
   <!-- Optional: Set a scope to limit where the snippet will trigger -->

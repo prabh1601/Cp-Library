@@ -158,7 +158,7 @@ template <typename H, typename... T> void DBG(const char *names, H h, T... t) {
     DBG(others + 2, t...);
 }
 
-string a(auto v) {
+string ci(auto v) {
     add1 = true;
     string ans = to_String(v);
     add1 = false;
