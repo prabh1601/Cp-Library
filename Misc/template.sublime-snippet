@@ -6,8 +6,10 @@ using namespace std;
 
 #ifdef PRABH
 #include "debug.h"
-#else 
-#define dbg(...) 
+#else
+#define dbg(...)
+#pragma GCC optimize("Ofast,unroll-loops")
+#pragma GCC target("avx,avx2,sse4.2,bmi,bmi2,popcnt,lzcnt")
 #endif
 
 #define int int64_t
@@ -23,7 +25,9 @@ void no(bool caps = true) { cout << (caps ? "NO" : "No") << '\n'; }
 template <typename T> bool ckmin(T& a, T b) { return b < a && (a = b, true); }
 template <typename T> bool ckmax(T& a, T b) { return b > a && (a = b, true); }
 
-${1:}
+void testCase() {
+    ${1:}
+}
 
 int32_t main() {
     cin.tie(0)->sync_with_stdio(0);
