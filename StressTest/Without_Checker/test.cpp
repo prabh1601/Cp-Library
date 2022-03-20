@@ -1,4 +1,4 @@
-// one often meets his destiny on the road he avoids to take --master oogway
+// Come on mate, keep going, we ain't that weak
 #include "bits/stdc++.h"
 using namespace std;
 
@@ -9,9 +9,9 @@ using namespace std;
 #endif
 
 #define int int64_t
-#define ld long double
 #define pb push_back
 #define all(v) begin(v), end(v)
+using ld = long double;
 const int inf = 4e18;
 const int N = 2e5 + 10;  // verify before using
 
@@ -22,66 +22,78 @@ template <typename T> bool ckmin(T& a, T b) { return b < a && (a = b, true); }
 template <typename T> bool ckmax(T& a, T b) { return b > a && (a = b, true); }
 
 void testCase() {
-    int n, a, b;
-    cin >> n >> a >> b;
-    vector<int> can(n);
-    vector<int> l(n), r(n);
-    for (int i = 0; i < n; i++) {
-        cin >> l[i] >> r[i] >> can[i];
-    }
+    int a, b;
+    cin >> a >> b;
 
-    int ans = inf;
-    for (int rep = 0; rep < 2; rep++) {
-        vector<int> da(n, inf), db(n, inf);
-        queue<pair<int, int>> q;
-        da[a] = 0, db[b] = 0;
-        q.push({a, b});
-        while (!q.empty()) {
-            auto [x, y] = q.front();
-            q.pop();
-            dbg(x, y);
-            if (can[x] ^ can[y] and can[x]) {
-                ckmin(ans, da[x]);
-            }
-
-            if (da[l[x]] == inf) {
-                da[l[x]] = da[x] + 1;
-                ckmin(db[l[y]], db[y] + 1);
-                q.push({l[x], l[y]});
-            } else {
-                int nx = l[x], ny = l[y];
-                if (can[nx] and !can[ny]) {
-                    ckmin(ans, da[x] + 1);
+    auto solve = [&](int x) {
+        string s = to_string(x);
+        int n = s.size();
+        int tot = 0;
+        for (int sum = 1; sum <= 9 * n; sum++) {
+            vector dp(n + 1, vector(2, vector(sum + 1, vector(sum + 1, int(-1)))));
+            auto rec = [&](auto& self, int pos, bool tight, int rem, int mod) -> int {
+                if (pos == n) {
+                    return (!rem and !mod);
                 }
-            }
+                int& ans = dp[pos][tight][rem][mod];
+                if (ans != -1) return ans;
+                ans = 0;
 
-            if (da[r[x]] == inf) {
-                da[r[x]] = da[x] + 1;
-                ckmin(db[r[y]], db[y] + 1);
-                q.push({r[x], r[y]});
-            } else {
-                int nx = r[x], ny = r[y];
-                if (can[nx] and !can[ny]) {
-                    ckmin(ans, da[x] + 1);
+                int lim = (tight ? s[pos] - '0' : 9);
+                for (int i = 0; i <= lim; i++) {
+                    if (i <= rem) {
+                        ans += self(self, pos + 1, tight and (i == lim), rem - i, (mod * i) % sum);
+                    }
                 }
-            }
+                return ans;
+            };
+
+            int got = rec(rec, 0, 1, sum, 1);
+            tot += got;
+        }
+        return tot;
+    };
+
+    auto chk = [&](int x) {
+        int t = x;
+        int s = 0;
+        while (t) {
+            s += (t % 10);
+            t /= 10;
         }
 
-        swap(a, b);
-    }
+        t = x;
+        int p = 1;
+        while (t) {
+            int c = (t % 10);
+            t /= 10;
+            p = (p * c) % s;
+        }
 
-    if (ans == inf)
-        cout << "indistinguishable";
+        return (p == 0);
+    };
+
+    a--;
+    int ans = 0;
+    if ((b % 10) == 0)
+        ans += solve(b - 1) + chk(b);
     else
-        cout << ans;
+        ans += solve(b);
+
+    if (a and (a % 10) == 0)
+        ans -= (solve(a - 1) + chk(a));
+    else
+        ans -= solve(a);
+
+    cout << ans << '\n';
 }
 
 int32_t main() {
     cin.tie(0)->sync_with_stdio(0);
     int t_c = 1;
-    // cin >> t_c;
+    cin >> t_c;
     for (int testNo = 1; testNo <= t_c; testNo++) {
-        // cout << "Case #" << testNo << ": ";
+        cout << "Case #" << testNo << ": ";
         testCase();
     }
 }

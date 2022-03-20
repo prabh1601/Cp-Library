@@ -1,5 +1,5 @@
-// The only power I have is, I believe we can do better
-#include "/mnt/Drive1/CP/Algo_Library/includes/generator.h"
+// Come on mate, keep going, we ain't that weak
+#include "bits/stdc++.h"
 using namespace std;
 
 #ifdef PRABH
@@ -9,32 +9,31 @@ using namespace std;
 #endif
 
 #define int int64_t
-#define ld long double
 #define pb push_back
 #define all(v) begin(v), end(v)
+using ld = long double;
 const int inf = 4e18;
 const int N = 2e5 + 10;  // verify before using
+
+void yes(bool caps = true) { cout << (caps ? "YES" : "Yes") << '\n'; }
+void no(bool caps = true) { cout << (caps ? "NO" : "No") << '\n'; }
 
 template <typename T> bool ckmin(T& a, T b) { return b < a && (a = b, true); }
 template <typename T> bool ckmax(T& a, T b) { return b > a && (a = b, true); }
 
 void testCase() {
-    int n = rnd.next(1, 10);
-    int a = rnd.next(0, n - 1);
-    int b = rnd.next(0, n - 1);
-    cout << n << ' ' << a << ' ' << b << '\n';
-    for (int i = 0; i < n; i++) {
-        int l = rnd.next(0, n - 1);
-        int r = rnd.next(0, n - 1);
-        int c = rnd.next(0, 1);
-        cout << l << ' ' << r << ' ' << c << '\n';
-    }
+    mt19937 rng(chrono::steady_clock::now().time_since_epoch().count());
+    auto rnd = [&](int a, int b) { return a + (rng() % (b - a)); };
+    int N = 1e5;
+    int n = rnd(1, N);
+    int m = rnd(n, N);
+    cout << n << ' ' << m << '\n';
 }
 
 int32_t main() {
     cin.tie(0)->sync_with_stdio(0);
-    int t_c = 1;
-    // cout << t_c << '\n';
+    int t_c = 10;
+    cout << t_c << '\n';
     for (int testNo = 1; testNo <= t_c; testNo++) {
         // cout << "Case #" << testNo << ": ";
         testCase();
