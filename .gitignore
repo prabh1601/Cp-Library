@@ -1,4 +1,4 @@
 #ignoring generator precompiled
 *.gch
-StressTest/With_Checker
+StressTest/Without_Checker
 
