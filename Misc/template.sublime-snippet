@@ -8,9 +8,30 @@ using namespace std;
 #include "debug.h"
 #else
 #define dbg(...)
-#pragma GCC optimize("Ofast,unroll-loops")
+#pragma GCC optimize("Ofast,unroll-loops")  // careful, this might break floating point arithmatic
 #pragma GCC target("avx,avx2,sse4.2,bmi,bmi2,popcnt,lzcnt")
 #endif
+
+template <class Fun> class y_combinator_result {
+    Fun fun_;
+
+   public:
+    template <class T> explicit y_combinator_result(T&& fun) : fun_(std::forward<T>(fun)) {}
+
+    template <class... Args> decltype(auto) operator()(Args&&... args) {
+        return fun_(std::ref(*this), std::forward<Args>(args)...);
+    }
+};
+
+template <class Fun> decltype(auto) y_combinator(Fun&& fun) {
+    return y_combinator_result<std::decay_t<Fun>>(std::forward<Fun>(fun));
+}
+
+void yes(bool caps = true) { cout << (caps ? "YES" : "Yes") << '\n'; }
+void no(bool caps = true) { cout << (caps ? "NO" : "No") << '\n'; }
+
+template <typename T> bool ckmin(T& a, T b) { return b < a && (a = b, true); }
+template <typename T> bool ckmax(T& a, T b) { return b > a && (a = b, true); }
 
 #define int int64_t
 #define pb push_back
@@ -18,12 +39,6 @@ using namespace std;
 using ld = long double;
 const int inf = 4e18;
 const int N = 2e5 + 10;  // verify before using
-
-void yes(bool caps = true) { cout << (caps ? "YES" : "Yes") << '\n'; }
-void no(bool caps = true) { cout << (caps ? "NO" : "No") << '\n'; }
-
-template <typename T> bool ckmin(T& a, T b) { return b < a && (a = b, true); }
-template <typename T> bool ckmax(T& a, T b) { return b > a && (a = b, true); }
 
 void testCase() {
     ${1:}

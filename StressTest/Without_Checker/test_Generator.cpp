@@ -24,16 +24,14 @@ template <typename T> bool ckmax(T& a, T b) { return b > a && (a = b, true); }
 void testCase() {
     mt19937 rng(chrono::steady_clock::now().time_since_epoch().count());
     auto rnd = [&](int a, int b) { return a + (rng() % (b - a)); };
-    int N = 1e5;
-    int n = rnd(1, N);
-    int m = rnd(n, N);
-    cout << n << ' ' << m << '\n';
+
+    cout << n << '\n';
 }
 
 int32_t main() {
     cin.tie(0)->sync_with_stdio(0);
-    int t_c = 10;
-    cout << t_c << '\n';
+    int t_c = 1;
+    // cout << t_c << '\n';
     for (int testNo = 1; testNo <= t_c; testNo++) {
         // cout << "Case #" << testNo << ": ";
         testCase();

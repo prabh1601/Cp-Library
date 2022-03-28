@@ -22,38 +22,24 @@ template <typename T> bool ckmin(T& a, T b) { return b < a && (a = b, true); }
 template <typename T> bool ckmax(T& a, T b) { return b > a && (a = b, true); }
 
 void testCase() {
-    int a, b;
-    cin >> a >> b;
-    auto chk = [&](int x) {
-        int t = x;
-        int s = 0;
-        while (t) {
-            s += (t % 10);
-            t /= 10;
+    int n;
+    cin >> n;
+    for (int i = 2; i <= n; i++) {
+        int sum = (i * (i - 1)) / 2;
+        if (sum <= n and ((n - sum)) % i == 0) {
+            return yes();
         }
+    }
 
-        t = x;
-        int p = 1;
-        while (t) {
-            int c = (t % 10);
-            t /= 10;
-            p = (p * c) % s;
-        }
-
-        return (p == 0);
-    };
-
-    int ans = 0;
-    for (int i = a; i <= b; i++) ans += chk(i);
-    cout << ans << '\n';
+    return no();
 }
 
 int32_t main() {
     cin.tie(0)->sync_with_stdio(0);
     int t_c = 1;
-    cin >> t_c;
+    // cin >> t_c;
     for (int testNo = 1; testNo <= t_c; testNo++) {
-        cout << "Case #" << testNo << ": ";
+        // cout << "Case #" << testNo << ": ";
         testCase();
     }
 }

@@ -1,0 +1,84 @@
+<snippet>
+	<content><![CDATA[
+struct SCC {
+    vector<vector<int>> graph, reverse_graph, condensed_graph, component_list;
+    vector<int> vis, order, comp, tpsort;
+    int n = 1, c = 0;
+
+    SCC(vector<vector<int>>& _graph) : graph(_graph) {
+        n = (int)graph.size();
+
+        reverse_graph = condensed_graph = component_list = vector<vector<int>>(n);
+        vis = vector<int>(n);
+        comp = vector<int>(n, -1);
+
+        // reversing the given graph in O(n + m)
+        for (int u = 0; u < n; u++) {
+            for (int v : graph[u]) {
+                reverse_graph[v].pb(u);
+            }
+        }
+
+        // making a ordering in O(n)
+        for (int i = 0; i < n; i++) {
+            if (!vis[i]) dfs1(i);
+        }
+
+        // travering the reversed graph in O(n) (note that this happens in topological manner)
+        // topological sort for condensed graph is in correct ordering
+        reverse(all(order));
+        for (int u : order) {
+            if (comp[u] == -1) {
+                dfs2(u);
+                tpsort.pb(c++);
+            }
+        }
+
+        // condensing the given graph in O(n + m)
+        for (int u = 0; u < n; u++) {
+            for (int v : graph[u]) {
+                if (comp[u] != comp[v]) {
+                    condensed_graph[comp[u]].pb(comp[v]);
+                }
+            }
+        }
+    }
+
+    void dfs1(int u) {
+        vis[u] = true;
+
+        for (int v : graph[u]) {
+            if (!vis[v]) dfs1(v);
+        }
+
+        order.pb(u);
+    }
+
+    void dfs2(int u) {
+        comp[u] = c;
+        component_list[comp[u]].pb(u);
+
+        for (int v : reverse_graph[u]) {
+            if (comp[v] == -1) dfs2(v);
+        }
+    }
+
+    // returns the component size of a scc (note that input is node of condensed graph)
+    int component_size(int x) {
+        assert(x >= 0 and x < n);
+        return (int)component_list[x].size();
+    }
+
+    // returns the scc label for a node from original graph
+    int component(int x) {
+        assert(x >= 0 and x < n);
+        return comp[x];
+    }
+};
+
+]]></content>
+	<!-- Optional: Set a tabTrigger to define how to trigger the snippet -->
+	<tabTrigger>__lib:scc</tabTrigger>
+	<!-- Optional: Set a scope to limit where the snippet will trigger -->
+	<!-- <scope>source.python</scope> -->
+</snippet>
