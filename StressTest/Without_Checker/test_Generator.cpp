@@ -1,31 +1,18 @@
-// Come on mate, keep going, we ain't that weak
+// Sample generator to generate an array of length n
 #include "bits/stdc++.h"
 using namespace std;
 
-#ifdef PRABH
-#include "debug.h"
-#else
-#define dbg(...)
-#endif
-
-#define int int64_t
-#define pb push_back
-#define all(v) begin(v), end(v)
-using ld = long double;
-const int inf = 4e18;
-const int N = 2e5 + 10;  // verify before using
-
-void yes(bool caps = true) { cout << (caps ? "YES" : "Yes") << '\n'; }
-void no(bool caps = true) { cout << (caps ? "NO" : "No") << '\n'; }
-
-template <typename T> bool ckmin(T& a, T b) { return b < a && (a = b, true); }
-template <typename T> bool ckmax(T& a, T b) { return b > a && (a = b, true); }
-
 void testCase() {
     mt19937 rng(chrono::steady_clock::now().time_since_epoch().count());
+    // returns a number between [a,b]
     auto rnd = [&](int a, int b) { return a + (rng() % (b - a)); };
 
+    int n = rnd(1, 10);
     cout << n << '\n';
+    for (int i = 0; i < n; i++) {
+        int x = rnd(1, 20);
+        cout << x << ' ';
+    }
 }
 
 int32_t main() {
