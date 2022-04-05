@@ -1,6 +1,6 @@
 <snippet>
     <content><![CDATA[
-// Lazy Segment Tree 
+// Lazy Segment Tree
 template <typename T, typename U = int, typename TT = function<T(const T&, const T&)>,
           typename UU = function<U(const U&, const U&)>, typename UT = function<T(const T&, const U&)>>
 struct segment_tree {
@@ -17,8 +17,8 @@ struct segment_tree {
 
     segment_tree() {}
 
-    segment_tree(const int size, const pair<T, U> _neutral_values, const TT _fun,
-                 const UU _lazy_to_lazy_assign, const UT _lazy_to_tree_assign, bool _range_effect = 0)
+    segment_tree(const int size, const pair<T, U> _neutral_values, const TT _fun, const UU _lazy_to_lazy_assign,
+                 const UT _lazy_to_tree_assign, bool _range_effect = 0)
         : leafs(size),
           fun(_fun),
           lazy_to_lazy_assign(_lazy_to_lazy_assign),
@@ -37,7 +37,7 @@ struct segment_tree {
         for (int i = n - 1; i > 0; i--) tree[i] = fun(tree[2 * i], tree[2 * i + 1]);
     }
 
-    void assign_changes(int x, int lx, int rx, int val) {
+    void assign_changes(int x, int lx, int rx, T val) {
         int fact = range_effect ? rx - lx : 1;
         tree[x] = lazy_to_tree_assign(tree[x], fact * val);
         if (rx - lx > 1) {
@@ -60,7 +60,7 @@ struct segment_tree {
     }
 
     // update range [L,R) in O(logn)
-    void range_modify(int l, int r, int val, int x, int lx, int rx) {
+    void range_modify(int l, int r, T val, int x, int lx, int rx) {
         push(x, lx, rx);
         if (l <= lx and rx <= r) {
             assign_changes(x, lx, rx, val);
@@ -91,14 +91,11 @@ struct segment_tree {
     // query to leaf 'index'
     T operator[](int index) { return query(index, index + 1, 1, 0, n); }
 
-    // update to leaf 'index'
-    void update(int index, int value) { range_modify(index, index + 1, value, 1, 0, n); }
-
     // query to [L,R)
     T query(int l, int r) { return query(l, r, 1, 0, n); }
 
     // update on [L,R)
-    void update(int l, int r, int value) { range_modify(l, r, value, 1, 0, n); }
+    void update(int l, int r, T value) { range_modify(l, r, value, 1, 0, n); }
 
     // constructor : (size,{tree_n,lazy_n},fun,ltl,ltt,rangeEffect);
 };
