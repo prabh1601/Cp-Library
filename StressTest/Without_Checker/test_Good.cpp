@@ -39,34 +39,33 @@ const int inf = 4e18;
 const int N = 2e5 + 10;  // verify before using
 
 void testCase() {
-    int n;
-    cin >> n;
-    vector<int> a(n);
-    for (int& i : a) {
-        cin >> i;
+    string s;
+    cin >> s;
+    string ans;
+    int n = s.size();
+    vector<char> mi(n + 1, 'A');
+    mi[n - 1] = s[n - 1];
+    vector<int> len(n);
+    len[n - 1] = 1;
+    for (int i = n - 2; i >= 0; i--) {
+        mi[i] = min(mi[i + 1], s[i]);
+        len[i] = 1 + (s[i] == s[i + 1] ? len[i + 1] : 0);
     }
 
-    vector<int> ans(n + 1);
-    for (int d = 1; d <= n; d++) {
-        int& s = ans[d];
-        set<int> vis;
-        for (int i = 0; !vis.count(i); i = (i + d) % n) {
-            s += a[i];
-            vis.insert(i);
-        }
+    for (int i = 0; i < n; i++) {
+        if (i < n - 1 and s[i + len[i]] > s[i]) ans += s[i];
+        ans += s[i];
     }
 
-    for (int i = 1; i <= n; i++) {
-        cout << ans[i] << '\n';
-    }
+    cout << ans << '\n';
 }
 
 int32_t main() {
     cin.tie(0)->sync_with_stdio(0);
     int t_c = 1;
-    // cin >> t_c;
+    cin >> t_c;
     for (int testNo = 1; testNo <= t_c; testNo++) {
-        // cout << "Case #" << testNo << ": ";
+        cout << "Case #" << testNo << ": ";
         testCase();
     }
 }

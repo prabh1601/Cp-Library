@@ -8,7 +8,7 @@ using namespace std;
 #include "debug.h"
 #else
 #define dbg(...)
-#pragma GCC optimize("Ofast,unroll-loops")  // careful, this might break floating point arithmatic
+#pragma GCC optimize("Ofast,unroll-loops")  
 #pragma GCC target("avx,avx2,sse4.2,bmi,bmi2,popcnt,lzcnt")
 #endif
 
@@ -41,7 +41,7 @@ const int inf = 4e18;
 const int N = 2e5 + 10;  // verify before using
 
 void testCase() {
-    ${1:}
+    $0
 }
 
 int32_t main() {
@@ -55,7 +55,7 @@ int32_t main() {
 }
 ]]></content>
 	<!-- Optional: Set a tabTrigger to define how to trigger the snippet -->
-	<tabTrigger>basic</tabTrigger>
+	<!-- <tabTrigger>basic</tabTrigger> -->
 	<!-- Optional: Set a scope to limit where the snippet will trigger -->
-	<scope>source.c++</scope>
+	<!-- <scope>source.c++</scope> -->
 </snippet>

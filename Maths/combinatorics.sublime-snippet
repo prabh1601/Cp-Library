@@ -1,0 +1,46 @@
+<snippet>
+	<content><![CDATA[
+template <typename T> struct combinatorics {
+    int sz = 0;
+    vector<T> fact, invfact, inv;
+
+    combinatorics(int _n) : sz(_n) {
+        fact = invfact = inv = vector<T>(sz + 1, 1);
+        for (int i = 1; i <= sz; i++) fact[i] = fact[i - 1] * i;
+        invfact[sz] = 1 / fact[sz];
+        for (int i = sz - 1; i >= 0; i--) {
+            invfact[i] = invfact[i + 1] * (i + 1);
+            inv[i] = invfact[i + 1] * fact[i];
+        }
+    }
+
+    // O(1)
+    T C(int n, int r) { return n < r ? 0 : fact[n] * invfact[r] * invfact[n - r]; }
+
+    // O(1)
+    T P(int n, int r) { return n < r ? 0 : fact[n] * invfact[n - r]; }
+
+    // O(min(k,n - r))
+    T naive_C(int n, int r) {
+        if (n < r) return 0;
+        r = min(r, n - r);
+        T res = 1;
+        for (int i = n; i > n - r; i--) res *= i;
+        return res * invfact[r];
+    }
+
+    // O(r)
+    T naive_P(int n, int r) {
+        if (n < r) return 0;
+        T res = 1;
+        for (int i = n; i > n - r; i--) res *= i;
+        return res;
+    }
+};
+$0
+]]></content>
+	<!-- Optional: Set a tabTrigger to define how to trigger the snippet -->
+	<!-- <tabTrigger>__lib:combinatorics</tabTrigger> -->
+	<!-- Optional: Set a scope to limit where the snippet will trigger -->
+	<!-- <scope>source.python</scope> -->
+</snippet>

@@ -1,12 +1,12 @@
 <snippet>
-	<content><![CDATA[
+    <content><![CDATA[
 template <typename T, typename F = function<T(const T &, const T &)>> struct sparse_table {
     int n, L;
     vector<vector<T>> data;
-    F fun;  // should be idempotent
+    F merge;  // should be idempotent
 
     // initializing the values
-    sparse_table(int _n, const F &_fun) : n(_n), fun(_fun) {
+    sparse_table(int _n, const F &_merge) : n(_n), merge(_merge) {
         L = 32 - __builtin_clz(n);
         data.resize(L);
         data[0].resize(n);
@@ -18,8 +18,9 @@ template <typename T, typename F = function<T(const T &, const T &)>> struct spa
 
         for (int l = 1; l < L; l++) {
             data[l].resize(n + 1 - (1 << l));
-            for (int i = 0; i + (1 << l) <= n; i++)
-                data[l][i] = fun(data[l - 1][i], data[l - 1][i + (1 << (l - 1))]);
+            for (int i = 0; i + (1 << l) <= n; i++) {
+                data[l][i] = merge(data[l - 1][i], data[l - 1][i + (1 << (l - 1))]);
+            }
         }
     }
 
@@ -27,15 +28,15 @@ template <typename T, typename F = function<T(const T &, const T &)>> struct spa
     T query(int start, int end) {
         assert(0 <= start and start < end and end <= n);
         int l = 31 - __builtin_clz(end - start);
-        T ans = fun(data[l][start], data[l][end - (1 << l)]);
+        T ans = merge(data[l][start], data[l][end - (1 << l)]);
         return ans;
     }
 };
 
 ${1:}
 ]]></content>
-	<!-- Optional: Set a tabTrigger to define how to trigger the snippet -->
-	<tabTrigger>__lib:sparse_table</tabTrigger>
-	<!-- Optional: Set a scope to limit where the snippet will trigger -->
+    <!-- Optional: Set a tabTrigger to define how to trigger the snippet -->
+    <!-- <tabTrigger>__lib:sparse_table</tabTrigger> -->
+    <!-- Optional: Set a scope to limit where the snippet will trigger -->
     <scope>source.c++</scope>
 </snippet>

@@ -39,41 +39,15 @@ const int inf = 4e18;
 const int N = 2e5 + 10;  // verify before using
 
 void testCase() {
-    int n;
-    cin >> n;
-    vector<int> a(n);
-    int sum = 0;
-    for (int& i : a) {
-        cin >> i;
-        sum += i;
-    }
-
-    set<int> g;
-    for (int i = 1; i <= n; i++) {
-        g.insert(gcd(i, n));
-    }
-
-    vector<int> ans(n + 1);
-    for (int d : g) {
-        int& s = ans[d];
-        set<int> vis;
-        for (int i = 0; !vis.count(i); i = (i + d) % n) {
-            s += a[i];
-            vis.insert(i);
-        }
-    }
-
-    for (int i = 1; i <= n; i++) {
-        cout << ans[gcd(i, n)] << '\n';
-    }
+	cout << "LMAO\n";
 }
 
 int32_t main() {
     cin.tie(0)->sync_with_stdio(0);
     int t_c = 1;
-    // cin >> t_c;
+    cin >> t_c;
     for (int testNo = 1; testNo <= t_c; testNo++) {
-        // cout << "Case #" << testNo << ": ";
+        cout << "Case #" << testNo << ": ";
         testCase();
     }
 }
