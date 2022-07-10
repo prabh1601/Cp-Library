@@ -165,6 +165,18 @@ string ci(auto v) {
     return ans;
 }
 
+string b(int64_t x, int size = -1) {
+    bool saw = 0;
+    string ans;
+    for (int i = 60; i >= 0; i--) {
+        int bit = ((x >> i) & 1);
+        saw |= bit;
+        if (saw or bit or i < size) ans += char('0' + bit);
+    }
+
+    return ans;
+}
+
 #define dbg(...)                        \
     cerr << "(" << __LINE__ << ") -> "; \
     DBG(#__VA_ARGS__, __VA_ARGS__);
