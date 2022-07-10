@@ -1,0 +1,60 @@
+<snippet>
+	<content><![CDATA[
+struct lca {
+    vector<vector<int>> adjList;
+    int L;
+    vector<int> depth;
+    vector<vector<int>> binLift;
+
+    lca(const vector<vector<int>>& _adjList, const int _L = 20, const int root = 0) : adjList(_adjList), L(_L) {
+        int n = (int)adjList.size();
+        depth = vector<int>(n);
+        binLift = vector<vector<int>>(L, vector<int>(n));
+        dfs(root, root, 0);
+    }
+
+    void dfs(int u, int par, int currentDepth) {
+        depth[u] = currentDepth;
+        binLift[0][u] = u;
+
+        binLift[0][u] = par;
+        for (int i = 1; (1 << i) <= currentDepth; i++) {
+            binLift[i][u] = binLift[i - 1][binLift[i - 1][u]];
+        }
+
+        for (int v : adjList[u]) {
+            if (v ^ par) {
+                dfs(v, u, currentDepth + 1);
+            }
+        }
+    }
+
+    int getLca(int u, int v) {
+        if (depth[u] < depth[v]) swap(u, v);
+        int diff = depth[u] - depth[v];
+        for (int b = L - 1; b >= 0; b--) {
+            if (diff & (1 << b)) u = binLift[b][u];
+        }
+
+        if (u == v) return u;
+
+        for (int b = L - 1; b >= 0; b--) {
+            if (binLift[b][u] != binLift[b][v]) {
+                u = binLift[b][u];
+                v = binLift[b][v];
+            }
+        }
+
+        return binLift[0][u];
+    }
+
+    int distance(int u, int v) { return depth[u] + depth[v] - 2 * depth[getLca(u, v)]; };
+};
+
+
+]]></content>
+	<!-- Optional: Set a tabTrigger to define how to trigger the snippet -->
+	<!-- <tabTrigger>hello</tabTrigger> -->
+	<!-- Optional: Set a scope to limit where the snippet will trigger -->
+	<!-- <scope>source.python</scope> -->
+</snippet>
