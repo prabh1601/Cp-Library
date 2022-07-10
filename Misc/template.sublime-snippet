@@ -1,6 +1,6 @@
 <snippet>
     <content><![CDATA[
-// Come on mate, keep going, we ain't that weak
+// Crying aint gonna right so lets get up and smash this :)
 #include "bits/stdc++.h"
 using namespace std;
 
@@ -23,20 +23,26 @@ template <class Fun> class yc_result {
     }
 };
 
-template <class Fun> decltype(auto) yc(Fun&& fun) { return yc_result<std::decay_t<Fun>>(std::forward<Fun>(fun)); }
+template <class Fun> decltype(auto) yc(Fun&& fun) {
+    return yc_result<std::decay_t<Fun>>(std::forward<Fun>(fun));
+}
 
 void yes(bool caps = true) { cout << (caps ? "YES" : "Yes") << '\n'; }
 void no(bool caps = true) { cout << (caps ? "NO" : "No") << '\n'; }
 
 template <typename T> bool ckmin(T& a, T b) { return b < a && (a = b, true); }
 template <typename T> bool ckmax(T& a, T b) { return b > a && (a = b, true); }
+template <typename T> using minpq = priority_queue<T, vector<T>, greater<T>>;
 
 #define int int64_t
 #define pb push_back
 #define all(v) begin(v), end(v)
+#define ss(v) (int)v.size()
 using ld = long double;
+
 const int inf = 4e18;
-const int N = 2e5 + 10;  // verify before using
+const int N = 2e5 + 10;  
+// PLEASE MAKE SURE BEFORE USING THESE VALUES
 
 void testCase() {
     $0
