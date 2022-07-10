@@ -1,0 +1,79 @@
+<snippet>
+	<content><![CDATA[
+template <typename T, typename F = function<T(const T&, const T&)>> struct sparse_table {
+    int n, L;
+    vector<vector<T>> data;
+    F merge;  // should be idempotent
+
+    sparse_table() {}
+
+    // initializing the values
+    sparse_table(int _n, const F& _merge) : n(_n), merge(_merge) {
+        L = 32 - __builtin_clz(n);
+        data.resize(L);
+        data[0].resize(n);
+    }
+
+    // building the table in O(nlogn)
+    template <typename Function> void init(const Function& initialize) {
+        for (int i = 0; i < n; i++) data[0][i] = initialize(i);
+
+        for (int l = 1; l < L; l++) {
+            data[l].resize(n + 1 - (1 << l));
+            for (int i = 0; i + (1 << l) <= n; i++) {
+                data[l][i] = merge(data[l - 1][i], data[l - 1][i + (1 << (l - 1))]);
+            }
+        }
+    }
+
+    // query to [L,R) in O(1)
+    T query(int start, int end) {
+        assert(0 <= start and start < end and end <= n);
+        int l = 31 - __builtin_clz(end - start);
+        T ans = merge(data[l][start], data[l][end - (1 << l)]);
+        return ans;
+    }
+};
+
+struct fast_lca {
+    vector<vector<int>> adjList;
+    vector<int> depth, eulerTour, pos;
+    sparse_table<int> st;
+
+    void dfs(int u, int par, int currentDepth) {
+        depth[u] = currentDepth;
+        pos[u] = (int)eulerTour.size();
+        eulerTour.pb(u);
+
+        for (int v : adjList[u]) {
+            if (v != par) {
+                dfs(v, u, currentDepth + 1);
+                eulerTour.pb(u);
+            }
+        }
+    }
+
+    fast_lca(const vector<vector<int>>& _adjList, const int root = 0) : adjList(_adjList) {
+        int n = (int)adjList.size();
+        depth = pos = vector<int>(n);
+        dfs(root, root, 0);
+        auto merge = [&](int u, int v) { return depth[u] < depth[v] ? u : v; };
+        st = sparse_table<int>((int)eulerTour.size(), merge);
+        st.init([&](int i) { return eulerTour[i]; });
+    }
+
+    int getLca(int u, int v) {
+        if (pos[u] > pos[v]) swap(u, v);
+        return st.query(pos[u], pos[v] + 1);
+    }
+
+    int distance(int u, int v) { return depth[u] + depth[v] - 2 * depth[getLca(u, v)]; }
+};
+
+
+]]></content>
+	<!-- Optional: Set a tabTrigger to define how to trigger the snippet -->
+	<!-- <tabTrigger>hello</tabTrigger> -->
+	<!-- Optional: Set a scope to limit where the snippet will trigger -->
+	<!-- <scope>source.python</scope> -->
+</snippet>
