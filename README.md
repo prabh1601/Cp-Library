@@ -1,2 +1,2 @@
 # Cp-Library
-My C++ Implementations for various data Structures and Algorithms. 
+My C++ Implementations for various Data Structures and Algorithms. 
