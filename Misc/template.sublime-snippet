@@ -1,6 +1,6 @@
 <snippet>
     <content><![CDATA[
-// Crying aint gonna right so lets get up and smash this :)
+// Not going down this way
 #include "bits/stdc++.h"
 using namespace std;
 
@@ -12,17 +12,13 @@ using namespace std;
 #pragma GCC target("avx,avx2,sse4.2,bmi,bmi2,popcnt,lzcnt")
 #endif
 
-template <class Fun> class yc_result {
+template <class Fun> struct yc_result {
     Fun fun_;
-
-   public:
     template <class T> explicit yc_result(T&& fun) : fun_(std::forward<T>(fun)) {}
-
     template <class... Args> decltype(auto) operator()(Args&&... args) {
         return fun_(std::ref(*this), std::forward<Args>(args)...);
     }
 };
-
 template <class Fun> decltype(auto) yc(Fun&& fun) {
     return yc_result<std::decay_t<Fun>>(std::forward<Fun>(fun));
 }
@@ -40,9 +36,9 @@ template <typename T> using minpq = priority_queue<T, vector<T>, greater<T>>;
 #define ss(v) (int)v.size()
 using ld = long double;
 
+// VERIFY BEFORE USING 
 const int inf = 4e18;
-const int N = 2e5 + 10;  
-// PLEASE MAKE SURE BEFORE USING THESE VALUES
+const int maxn = 2e5 + 10;  
 
 void testCase() {
     $0
@@ -50,9 +46,9 @@ void testCase() {
 
 int32_t main() {
     cin.tie(0)->sync_with_stdio(0);
-    int t_c = 1;
-    // cin >> t_c;
-    for (int testNo = 1; testNo <= t_c; testNo++) {
+    int tc = 1;
+    // cin >> tc;
+    for (int testNo = 1; testNo <= tc; testNo++) {
         // cout << "Case #" << testNo << ": ";
         testCase();
     }
